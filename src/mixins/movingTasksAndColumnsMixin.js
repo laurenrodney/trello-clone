@@ -14,36 +14,27 @@ export default {
     }
   },
   methods: {
-    moveTaskOrColumn (event, toColumn, toColumnIndex, toTaskIndex) {
-      const type = event.dataTransfer.getData('type')
-      if (type === 'task') {
-        this.moveTask(
-          event,
-          toColumn,
-          toTaskIndex !== undefined ? toTaskIndex : toColumn.length
-        )
+    moveTaskOrColumn (transferData) {
+      if (transferData.type === 'task') {
+        this.moveTask(transferData)
       } else {
-        this.moveColumn(event, toColumnIndex)
+        this.moveColumn(transferData)
       }
     },
-    moveTask (event, toColumn, toTaskIndex) {
-      const fromColumnIndex = event.dataTransfer.getData('from-column-index')
+    moveTask ({ fromColumnIndex, fromTaskIndex }) {
       const fromColumn = this.board.columns[fromColumnIndex].tasks
-      const fromTaskIndex = event.dataTransfer.getData('from-task-index')
 
       this.$store.commit('MOVE_TASK', {
         fromColumn,
-        toColumn,
+        toColumn: this.column.tasks,
         fromTaskIndex,
-        toTaskIndex
+        toTaskIndex: this.taskIndex
       })
     },
-    moveColumn (event, toColumnIndex) {
-      const fromColumnIndex = event.dataTransfer.getData('from-column-index')
-
+    moveColumn ({ fromColumnIndex }) {
       this.$store.commit('MOVE_COLUMN', {
         fromColumnIndex,
-        toColumnIndex
+        toColumnIndex: this.columnIndex
       })
     }
   }
