@@ -24,7 +24,9 @@
             @click="goToTask(task)"
             @dragover.prevent
             @dragenter.prevent
-            @drop.stop="moveTaskOrColumn($event, column.tasks, $columnIndex, $taskIndex)"
+            @drop.stop="
+              moveTaskOrColumn($event, column.tasks, $columnIndex, $taskIndex)
+            "
           >
             <span class="w-full flex-no-shrink font-bold">
               {{ task.name }}
@@ -40,9 +42,18 @@
             type="text"
             class="block p-2 w-full bg-transparent"
             placeholder="+ Add new task"
-            @keyup.enter="createTask($event, column.tasks)" 
+            @keyup.enter="createTask($event, column.tasks)"
           />
         </div>
+      </div>
+      <div class="column-flex">
+        <input
+          type="text"
+          class="p-2 mr-2 flex-grow"
+          placeholder="+ Add new Column"
+          v-model="newColumnName"
+          @keyup.enter="createColumn"
+        />
       </div>
     </div>
     <div class="task-bg" v-if="isTaskOpen" @click.self="close">
@@ -55,6 +66,11 @@
 import { mapState } from 'vuex'
 
 export default {
+  data () {
+    return {
+      newColumnName: ''
+    }
+  },
   computed: {
     ...mapState(['board']),
     isTaskOpen () {
@@ -71,6 +87,12 @@ export default {
     createTask (event, tasks) {
       this.$store.commit('CREATE_TASK', { tasks, name: event.target.value })
       event.target.value = ''
+    },
+    createColumn () {
+      this.$store.commit('CREATE_COLUMN', {
+        name: this.newColumnName
+      })
+      this.newColumnName = ''
     },
     pickUpTask (event, taskIndex, fromColumnIndex) {
       event.dataTransfer.effectAllowed = 'move'
@@ -90,9 +112,12 @@ export default {
     moveTaskOrColumn (event, toColumn, toColumnIndex, toTaskIndex) {
       const type = event.dataTransfer.getData('type')
       if (type === 'task') {
-        this.moveTask(event, toColumn, toTaskIndex !== undefined ? toTaskIndex : toColumn.length)
-      }
-      else {
+        this.moveTask(
+          event,
+          toColumn,
+          toTaskIndex !== undefined ? toTaskIndex : toColumn.length
+        )
+      } else {
         this.moveColumn(event, toColumnIndex)
       }
     },
