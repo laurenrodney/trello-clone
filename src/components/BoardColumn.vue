@@ -10,6 +10,9 @@
       <div class="flex items-center mb-2 font-bold">
         {{ column.name }}
       </div>
+      <AppButton type="danger" @click.stop="deleteColumn(columnIndex)"
+        >Delete</AppButton
+      >
       <div class="list-reset">
         <ColumnTask
           v-for="(task, $taskIndex) of column.tasks"
@@ -35,10 +38,11 @@
 import ColumnTask from './ColumnTask'
 import AppDrag from './AppDrag'
 import AppDrop from './AppDrop'
+import AppButton from './AppButton'
 import movingTasksAndColumnsMixin from '@/mixins/movingTasksAndColumnsMixin'
 
 export default {
-  components: { ColumnTask, AppDrag, AppDrop },
+  components: { ColumnTask, AppDrag, AppDrop, AppButton },
   mixins: [movingTasksAndColumnsMixin],
   methods: {
     pickUpColumn (event, fromColumnIndex) {
@@ -51,6 +55,9 @@ export default {
     createTask (event, tasks) {
       this.$store.commit('CREATE_TASK', { tasks, name: event.target.value })
       event.target.value = ''
+    },
+    deleteColumn (columnIndex) {
+      this.$store.commit('DELETE_COLUMN', { columnIndex })
     }
   }
 }

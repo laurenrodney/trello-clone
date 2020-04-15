@@ -53,6 +53,10 @@ export default new Vuex.Store({
     },
     DELETE_TASK (state, { column, taskIndex }) {
       column.splice(taskIndex, 1)
+    },
+    DELETE_COLUMN (state, { columnIndex }) {
+      const columnList = state.board.columns
+      columnList.splice(columnIndex, 1)
     }
   }
 })
