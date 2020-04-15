@@ -1,5 +1,11 @@
 <template>
-  <div draggable @dragstart.self="onDrag" @dragover.prevent @dragenter.prevent>
+  <div
+    draggable
+    @dragstart.self="onDrag"
+    @dragover.prevent
+    @dragenter.prevent
+    v-on="$listeners"
+  >
     <slot />
   </div>
 </template>
