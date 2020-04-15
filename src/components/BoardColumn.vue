@@ -10,8 +10,8 @@
       <div class="flex items-center mb-2 font-bold">
         {{ column.name }}
       </div>
-      <AppButton type="danger" @click.stop="deleteColumn(columnIndex)"
-        >Delete</AppButton
+      <p style="color:red" @click.stop="openDeleteModal({ columnIndex })"
+        >Delete</p
       >
       <div class="list-reset">
         <ColumnTask
@@ -38,11 +38,10 @@
 import ColumnTask from './ColumnTask'
 import AppDrag from './AppDrag'
 import AppDrop from './AppDrop'
-import AppButton from './AppButton'
 import movingTasksAndColumnsMixin from '@/mixins/movingTasksAndColumnsMixin'
 
 export default {
-  components: { ColumnTask, AppDrag, AppDrop, AppButton },
+  components: { ColumnTask, AppDrag, AppDrop },
   mixins: [movingTasksAndColumnsMixin],
   methods: {
     pickUpColumn (event, fromColumnIndex) {
@@ -58,6 +57,16 @@ export default {
     },
     deleteColumn (columnIndex) {
       this.$store.commit('DELETE_COLUMN', { columnIndex })
+    },
+    openDeleteModal (transferData) {
+      this.$router.push({
+        name: 'delete',
+        params: {
+          type: 'column',
+          columnIndex: transferData.columnIndex,
+          taskIndex: transferData.taskIndex === undefined ? 0 : transferData.taskIndex
+        }
+      })
     }
   }
 }

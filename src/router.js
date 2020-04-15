@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Board from './views/Board.vue'
 import Task from './views/Task.vue'
+import Delete from './views/Delete.vue'
 
 Vue.use(Router)
 
@@ -18,6 +19,11 @@ export default new Router({
           path: 'task/:id',
           name: 'task',
           component: Task
+        },
+        {
+          path: 'delete/:type/:columnIndex/:taskIndex',
+          name: 'delete',
+          component: Delete
         }
       ]
     }

@@ -18,7 +18,7 @@
         />
       </div>
     </div>
-    <div class="task-bg" v-if="isTaskOpen" @click.self="close">
+    <div class="task-bg" v-if="isModalOpen" @click.self="close">
       <router-view />
     </div>
   </div>
@@ -39,8 +39,8 @@ export default {
   },
   computed: {
     ...mapState(['board']),
-    isTaskOpen () {
-      return this.$route.name === 'task'
+    isModalOpen () {
+      return this.$route.name === 'task' || this.$route.name === 'delete'
     }
   },
   methods: {

@@ -15,7 +15,12 @@
       <p v-if="task.description" class="w-full flex-no-shrink mt-1 text-sm">
         {{ task.description }}
       </p>
-      <AppButton type="danger" @click.stop="deleteTask(columnIndex, taskIndex)">Delete</AppButton>
+      <p
+        style="color:red"
+        @click.stop="openDeleteModal({ columnIndex, taskIndex })"
+      >
+        Delete
+      </p>
     </AppDrag>
   </AppDrop>
 </template>
@@ -23,14 +28,12 @@
 <script>
 import AppDrag from './AppDrag'
 import AppDrop from './AppDrop'
-import AppButton from './AppButton'
 import movingTasksAndColumnsMixin from '@/mixins/movingTasksAndColumnsMixin'
 
 export default {
   components: {
     AppDrag,
-    AppDrop,
-    AppButton
+    AppDrop
   },
   mixins: [movingTasksAndColumnsMixin],
   props: {
@@ -50,6 +53,16 @@ export default {
     deleteTask (columnIndex, taskIndex) {
       const column = this.board.columns[columnIndex].tasks
       this.$store.commit('DELETE_TASK', { column, taskIndex })
+    },
+    openDeleteModal (transferData) {
+      this.$router.push({
+        name: 'delete',
+        params: {
+          type: 'task',
+          columnIndex: transferData.columnIndex,
+          taskIndex: transferData.taskIndex
+        }
+      })
     }
   }
 }
