@@ -7,9 +7,19 @@
         fromColumnIndex: columnIndex
       }"
     >
-      <div class="flex items-center mb-2 font-bold">
+      <div v-if="isColumnInEdit" class="flex items-center mb-2 font-bold">
+        <input
+          type="text"
+          :value="column.name"
+          @keyup.enter="updateColumnName($event, 'name')"
+        >
+      </div>
+      <div v-else class="flex items-center mb-2 font-bold">
         {{ column.name }}
       </div>
+      <p style="color:green" @click="openColumnEdit"
+        >Edit</p
+      >
       <p style="color:red" @click.stop="openDeleteModal({ columnIndex })"
         >Delete</p
       >
@@ -43,6 +53,11 @@ import movingTasksAndColumnsMixin from '@/mixins/movingTasksAndColumnsMixin'
 export default {
   components: { ColumnTask, AppDrag, AppDrop },
   mixins: [movingTasksAndColumnsMixin],
+  data () {
+    return {
+      isColumnInEdit: false
+    }
+  },
   methods: {
     pickUpColumn (event, fromColumnIndex) {
       event.dataTransfer.effectAllowed = 'move'
@@ -67,6 +82,17 @@ export default {
           taskIndex: transferData.taskIndex === undefined ? 0 : transferData.taskIndex
         }
       })
+    },
+    updateColumnName (event, key) {
+      this.$store.commit('UPDATE_COLUMN_NAME', {
+        column: this.column,
+        key,
+        value: event.target.value
+      })
+      this.isColumnInEdit = false
+    },
+    openColumnEdit () {
+      this.isColumnInEdit = true
     }
   }
 }
