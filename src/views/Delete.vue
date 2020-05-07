@@ -1,11 +1,17 @@
 <template>
   <div class="delete-view" v-on="$listeners">
-    <div class="flex flex-col flex-grow items-start justify-between px-4">
-      <h2>Do you want to delete this?</h2>
-      <AppButton type="danger" @click.stop="deleteTaskOrColumn()"
-        >Delete</AppButton
-      >
-      <AppButton @click="close">Cancel</AppButton>
+    <div class="flex flex-col flex-grow items-start justify-between px-4 items-center">
+      <h2 class="p-4">Are you sure you want to delete this?</h2>
+      <div class="flex flex-row">
+        <div class="p-4">
+          <AppButton type="danger" @click.stop="deleteTaskOrColumn()"
+            >Delete</AppButton
+          >
+        </div>
+        <div class="p-4">
+          <AppButton @click="close" class="p-4">Cancel</AppButton>
+        </div>
+      </div>
     </div>
   </div>
 </template>
