@@ -1,25 +1,28 @@
 <template>
-  <div class="board">
-    <div class="flex flex-row items-start">
-      <BoardColumn
-        v-for="(column, $columnIndex) of board.columns"
-        :key="$columnIndex"
-        :column="column"
-        :columnIndex="$columnIndex"
-        :board="board"
-      />
-      <div class="column-flex">
-        <input
-          type="text"
-          class="p-2 mr-2 flex-grow"
-          placeholder="+ Add new Column"
-          v-model="newColumnName"
-          @keyup.enter="createColumn"
+  <div class="board flex flex-col w-full">
+    <Marquee></Marquee>
+    <div id="main-body" class="flex flex-grow p-4">
+      <div class="flex flex-row items-start">
+        <BoardColumn
+          v-for="(column, $columnIndex) of board.columns"
+          :key="$columnIndex"
+          :column="column"
+          :columnIndex="$columnIndex"
+          :board="board"
         />
+        <div class="column-flex">
+          <input
+            type="text"
+            class="p-2 mr-2 flex-grow"
+            placeholder="+ Add new Column"
+            v-model="newColumnName"
+            @keyup.enter="createColumn"
+          />
+        </div>
       </div>
-    </div>
-    <div class="task-bg" v-if="isModalOpen" @click.self="close">
-      <router-view />
+      <div class="task-bg" v-if="isModalOpen" @click.self="close">
+        <router-view />
+      </div>
     </div>
   </div>
 </template>
@@ -27,10 +30,10 @@
 <script>
 import { mapState } from 'vuex'
 import BoardColumn from '@/components/BoardColumn'
-
+import Marquee from '@/components/Marquee'
 export default {
   components: {
-    BoardColumn
+    BoardColumn, Marquee
   },
   data () {
     return {
@@ -59,7 +62,8 @@ export default {
 
 <style lang="css">
 .board {
-  @apply p-4 bg-teal-dark h-full overflow-auto;
+  @apply h-full overflow-auto;
+  background-image: linear-gradient(#bfebe1, 75%, #f55c5b)
 }
 
 .task-bg {

@@ -11,18 +11,23 @@
         <input
           type="text"
           :value="column.name"
+          class="flex flex-grow"
           @keyup.enter="updateColumnName($event, 'name')"
-        >
+        />
       </div>
-      <div v-else class="flex items-center mb-2 font-bold">
-        {{ column.name }}
+      <div v-else class="flex flex-grow items-center mb-2 font-bold">
+        <div class="flex-grow">{{ column.name }}</div>
+        <div class="flex flex-row buttons">
+          <div class="px-1">
+            <AppIcon icon="edit" style="color:green" @click="openColumnEdit">Edit</AppIcon>
+          </div>
+          <div class="px-1">
+            <AppIcon icon="trash" style="color:red" @click.stop="openDeleteModal({ columnIndex })">
+              Delete
+            </AppIcon>
+          </div>
+        </div>
       </div>
-      <p style="color:green" @click="openColumnEdit"
-        >Edit</p
-      >
-      <p style="color:red" @click.stop="openDeleteModal({ columnIndex })"
-        >Delete</p
-      >
       <div class="list-reset">
         <ColumnTask
           v-for="(task, $taskIndex) of column.tasks"
@@ -79,7 +84,8 @@ export default {
         params: {
           type: 'column',
           columnIndex: transferData.columnIndex,
-          taskIndex: transferData.taskIndex === undefined ? 0 : transferData.taskIndex
+          taskIndex:
+            transferData.taskIndex === undefined ? 0 : transferData.taskIndex
         }
       })
     },
@@ -102,5 +108,9 @@ export default {
 .column {
   @apply bg-grey-light p-2 mr-4 text-left shadow rounded;
   min-width: 350px;
+}
+
+.buttons{
+  text-align: right;
 }
 </style>
